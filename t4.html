@@ -1,32 +1,33 @@
 <!DOCTYPE html>
-<html lang= "en">
+<html>
     <head>
-        <meta  charset="UTF-8"/>
-        <meta name="viewport" content="width=\, initial-scale = 1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie-edge">
         <title>LATEST RATES</title>    
-        <style>
-            *{
-                margin: 0px;
-                padding: 0px;
-            }
-            canvas{
-                border: 1px  black;
-            }
-        </style>
+        <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.1.min.js"></script>
+        
     </head>
-    <body>
-        <script>
-         
-            const api_url = 'https://api.exchangeratesapi.io/latest/'   //fetching the data from URL
-            async function getRATES()                                      
-            {
-                const response = await fetch(api_url);                  
-                const data = await response.json();
-                console.log(data);                                         
-            }
+           <script>
+            
+            $.getJSON("data.json",
+                function(json){
+                    var i;
+                    var date;
+                    var data = json;
+                    var rate = data.rates;
+                    
+                    for(i=01; i<=31; i++)
+                    {
+                        //date = "2020-01-".concat(i.toString());
+                        console.log(i)
+                    }
+                    // console.log(rate["2020-02-11"].INR)
+                    // console.log(data.rates)
+                })
+            
+            </script> 
 
-            getRATES(); 
-        </script> 
+    <body>
+        <canvas id="graph" width="600" height="400">
+                    
+        </canvas>
     </body>
 </html>
