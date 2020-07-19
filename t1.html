@@ -1,38 +1,48 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>EURO TO INR EXCHANGE RATE</title>    
-        
-        
+        <title>INR AGAINST EUR EXCHANGE RATE</title> 
+        <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.1.min.js"></script>     
+        <h1>EXCHANGE RATE OF INR AGAINST EUR FOR JANUARY MONTH</h1>
+       
     </head>
            <script>
-            
+                
             $.getJSON("data.json",
                 function(json){
                     var i;
-                 
                     var date;
                     var data = json;
                     var rate = data.rates;
-//                     var  split = rate.split("-01");
-                    
-                   
+                    var firstSat = 4;
+                    var firstSun = 5;
 
-
-                    console.log(rate)
-
-
-
-
-                    for(i=1; i<=31; i++)
+                    for(i=2 ; i<=31 ; i++)
                     {
-                       date = "2020-01-0".concat(i.toString());
-                        console.log(rate[date].INR);
+                        if(i == firstSat )
+                        {
+                                firstSat=firstSat+7;                            
+
+                        }else if(i == firstSun)
+                        {
+
+                            firstSun=firstSun+7;
+                        }
+                        else{
+                          
+                            if(i>=10){
+                                console.log("2020-01-"+i)
+                                console.log(rate["2020-01-"+i].INR);
+                            }
+                            else{
+                                console.log("2020-01-0"+i)
+                                console.log(rate["2020-01-0"+i].INR);
+                            }   
+                        }
+                    
                     }
-                    console.log(rate["2020-02-11"].INR)
-//                     console.log(data.rates)
+                  
                  })
-            
             </script> 
 
     <body>
