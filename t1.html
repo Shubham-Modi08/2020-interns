@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>EURO TO INR EXCHANGE RATE</title>    
+        
+        
+    </head>
+           <script>
+            
+            $.getJSON("data.json",
+                function(json){
+                    var i;
+                 
+                    var date;
+                    var data = json;
+                    var rate = data.rates;
+                    var  split = rate.split("-01");
+                    
+                   
+
+
+                    console.log(rate)
+
+
+
+
+                    for(i=1; i<=31; i++)
+                    {
+                       date = "2020-01-0".concat(i.toString());
+                        console.log(rate[date].INR);
+                    }
+                    console.log(rate["2020-02-11"].INR)
+                    console.log(data.rates)
+                 })
+            
+            </script> 
+
+    <body>
+        <canvas id="graph" width="600" height="400">
+                    
+        </canvas>
+    </body>
+</html>
