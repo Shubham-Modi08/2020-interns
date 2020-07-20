@@ -22,6 +22,24 @@
                     var janRATE
                     var janDATE 
                     
+                    // X LABEL 
+                    var element = document.getElementById("xlab");
+                    element.style.position = "absolute";
+                    element.style.left = '250px';
+                    element.style.top = '580px';
+
+                    // INR LABEL
+                    var element = document.getElementById("INR");
+                    element.style.position = "absolute";
+                    element.style.left = '650px';
+                    element.style.top = '145px';
+
+                    //GBP LABEL
+                    var element = document.getElementById("GBP");
+                    element.style.position = "absolute";
+                    element.style.left = '650px';
+                    element.style.top = '500px';
+                    
 
                     for(i=2 ; i<=31 ; i++)
                     {
@@ -49,8 +67,8 @@
                                  janRATE= rate["2020-01-"+i].GBP;
 
                                  janDATA_GBP.push({
-                                     x: janDATE,
-                                     y: janRATE,
+                                     X: janDATE,
+                                     Y: janRATE,
                                  })
                             }
                             else{
@@ -66,8 +84,8 @@
                                janRATE= rate["2020-01-0"+i].GBP;
                                
                                  janDATA_GBP.push({
-                                     x: janDATE,
-                                     y: janRATE,
+                                     X: janDATE,
+                                     Y: janRATE,
                                  })
                             }   
                         }
@@ -91,21 +109,7 @@
                 max += 10 - max % 10;
                 return max;
             }
-                     // Returns the max Y value in our data list for GBP
-            function getMaxY() {
-                var max = 0;
-                
-                for(var i = 0; i < janDATA_GBP.length; i ++) {
-                    if(janDATA_GBP[i].Y > max) {
-                        max = janDATA_GBP[i].Y;
-                        // console.log(max);
-                    }
-                }
-                
-                max += 10 - max % 10;
-                return max;
-            }
-
+                     
 
 
 
@@ -115,15 +119,13 @@
                 return ((graph.width() - xPadding) / janDATA_INR.length) * val + (xPadding * 1.5);
             }
             
-            // Return the x pixel for a graph point for GBP
-            function getXPixel(val) {
-                return ((graph.width() - xPadding) / janDATA_GBP.length) * val + (xPadding * 1.5);
-            }
+           
 
             // Return the y pixel for a graph point
             function getYPixel(val) {
                 return graph.height() - (((graph.height() - yPadding) / getMaxY()) * val) - yPadding;
             }
+                
 
             $(document).ready(function() {
                 graph = $('#graph');
@@ -139,7 +141,7 @@
                 c.beginPath();
                 c.moveTo(xPadding, 0);
                 c.lineTo(xPadding, graph.height() - yPadding);
-                c.lineTo(graph.width(), graph.height() - yPadding);
+                c.lineTo(graph.width(),graph.height() - yPadding);
                 c.stroke();
                 
                 //INR VALUES DRAWING
@@ -158,23 +160,7 @@
                     c.fillText(i, xPadding - 10 , getYPixel(i));
                 }
 
-               //GBP VALUES DRAWING
-                // Draw the X value texts
-                for(var i = 0; i < janDATA_GBP.length; i ++) {
-                    c.fillText(janDATA_GBP[i].X, getXPixel(i), graph.height() - yPadding + 20);
-                }
-                
-                // Draw the Y value texts
-                   
-                c.textAlign = "right"
-                c.textBaseline = "middle";
-                                 
-                
-                for(var i = 0; i < getMaxY(); i += 5) {               
-                    c.fillText(i, xPadding - 10 , getYPixel(i));
-                }
                
-                
                 
                 c.strokeStyle = '#f00';
                 
@@ -187,13 +173,7 @@
                 c.stroke();
 
 
-                // Draw the line graph for GBP
-                c.beginPath();
-                c.moveTo(getXPixel(0), getYPixel(janDATA_GBP[0].Y));
-                for(var i = 1; i < janDATA_GBP.length; i ++) {
-                    c.lineTo(getXPixel(i), getYPixel(janDATA_GBP[i].Y));
-                }
-                c.stroke();
+               
                 
                 // Draw the dots for INR
                 c.fillStyle = '#333';
@@ -204,21 +184,99 @@
                     c.fill();
                 }
 
+            })
+// -------------------------------------------------------------------------------------------------
+
+
+                    // Returns the max Y value in our data list for GBP
+            function getMaxY_GBP() {
+                var max = 0;
+                
+                for(var i = 0; i < janDATA_GBP.length; i ++) {
+                    if(janDATA_GBP[i].Y > max) {
+                        max = janDATA_GBP[i].Y;
+                        console.log(max);
+                    }
+                }
+                
+                max += 10 - max % 10;
+                return max;
+            }
+                     
+
+
+
+
+            // Return the x pixel for a graph point for GBP
+            function getXPixel_GBP(val) {
+                return ((graph.width() - xPadding) / janDATA_GBP.length) * val + (xPadding * 1.5);
+            }
+            
+           
+
+            // Return the y pixel for a graph point
+            function getYPixel_GBP(val) {
+                return graph.height() - (((graph.height() - yPadding) / getMaxY_GBP()) * val) - yPadding;
+            }
+                
+
+            $(document).ready(function() {
+                graph = $('#graph');
+                var c = graph[0].getContext('2d'); 
+                    
+                
+                //GBP VALUES DRAWING
+                // Draw the X value texts
+                // for(var i = 0; i < janDATA_GBP.length; i ++) {
+                    // c.fillText(janDATA_GBP[i].X, getXPixel_GBP(i), graph.height() - yPadding + 20);
+                // }
+                
+                // Draw the Y value texts
+                   
+                c.textAlign = "right"
+                c.textBaseline = "middle";
+                                 
+                
+                for(var i = 0; i < getMaxY_GBP(); i += 5) {               
+                    c.fillText(i, xPadding - 10 , getYPixel_GBP(i));
+                }
+
+               
+                
+                c.strokeStyle = '#f00';
+                
+                // Draw the line graph for INR
+                c.beginPath();
+                c.moveTo(getXPixel_GBP(0), getYPixel_GBP(janDATA_GBP[0].Y));
+                for(var i = 1; i < janDATA_GBP.length; i ++) {
+                    c.lineTo(getXPixel_GBP(i), getYPixel_GBP(janDATA_GBP[i].Y));
+                }
+                c.stroke();
+
+
+               
+                
                 // Draw the dots for GBP
                 c.fillStyle = '#333';
                 
                 for(var i = 0; i < janDATA_GBP.length; i ++) {  
                     c.beginPath();
-                    c.arc(getXPixel(i), getYPixel(janDATA_GBP[i].Y), 4, 0, Math.PI * 2, true);
+                    c.arc(getXPixel_GBP(i), getYPixel_GBP(janDATA_GBP[i].Y), 4, 0, Math.PI * 2, true);
                     c.fill();
                 }
-            });
-                 })
-                
+            })
+        
+        });
+
+        
             </script> 
 
     <body>
-        <canvas id="graph" width="700" height="500">
+        <h4>RATES</h4>
+        <h3 id = "xlab">JAN 2020</h3>
+        <h3 id = "INR">INR</h3>
+        <h3 id = "GBP">GBP</h3>
+        <canvas id="graph" width="640" height="480">
                     
         </canvas>
     </body>
