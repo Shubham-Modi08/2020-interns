@@ -17,7 +17,8 @@
                     var rate = data.rates;
                     var firstSat = 4;
                     var firstSun = 5;
-                    var janDATA = []
+                    var janDATA_INR = []
+                    var janDATA_GBP = []
                     var janRATE
                     var janDATE 
                     
@@ -39,14 +40,15 @@
                                  janDATE = i ;
                                  janRATE= rate["2020-01-"+i].INR;
 
-                                 janDATE = i ;
-                                 janRATE= rate["2020-01-"+i].GBP;
-
-                                 janDATA.push({
+                                 janDATA_INR.push({
                                      X: janDATE,
                                      Y: janRATE,
                                  })
-                                 janDATA.push({
+
+                                 janDATE = i ;
+                                 janRATE= rate["2020-01-"+i].GBP;
+
+                                 janDATA_GBP.push({
                                      x: janDATE,
                                      y: janRATE,
                                  })
@@ -55,14 +57,15 @@
                                janDATE= i;
                                janRATE= rate["2020-01-0"+i].INR;
 
-                               janDATE= i;
-                               janRATE= rate["2020-01-0"+i].GBP;
-                               
-                               janDATA.push({
+                               janDATA_INR.push({
                                      X: janDATE,
                                      Y: janRATE,
                                  })
-                                 janDATA.push({
+
+                               janDATE= i;
+                               janRATE= rate["2020-01-0"+i].GBP;
+                               
+                                 janDATA_GBP.push({
                                      x: janDATE,
                                      y: janRATE,
                                  })
@@ -70,15 +73,17 @@
                         }
                     
                     }
-                    console.log(janDATA)
+                    console.log(janDATA_GBP)
+                    console.log(janDATA_INR)
+
                     
-                   // Returns the max Y value in our data list
+                   // Returns the max Y value in our data list for INR
             function getMaxY() {
                 var max = 0;
                 
-                for(var i = 0; i < janDATA.length; i ++) {
-                    if(janDATA[i].Y > max) {
-                        max = janDATA[i].Y;
+                for(var i = 0; i < janDATA_INR.length; i ++) {
+                    if(janDATA_INR[i].Y > max) {
+                        max = janDATA_INR[i].Y;
                         // console.log(max);
                     }
                 }
@@ -86,11 +91,35 @@
                 max += 10 - max % 10;
                 return max;
             }
-                 // Return the x pixel for a graph point
+                     // Returns the max Y value in our data list for GBP
+            function getMaxY() {
+                var max = 0;
+                
+                for(var i = 0; i < janDATA_GBP.length; i ++) {
+                    if(janDATA_GBP[i].Y > max) {
+                        max = janDATA_GBP[i].Y;
+                        // console.log(max);
+                    }
+                }
+                
+                max += 10 - max % 10;
+                return max;
+            }
+
+
+
+
+
+            // Return the x pixel for a graph point for INR
             function getXPixel(val) {
-                return ((graph.width() - xPadding) / janDATA.length) * val + (xPadding * 1.5);
+                return ((graph.width() - xPadding) / janDATA_INR.length) * val + (xPadding * 1.5);
             }
             
+            // Return the x pixel for a graph point for GBP
+            function getXPixel(val) {
+                return ((graph.width() - xPadding) / janDATA_GBP.length) * val + (xPadding * 1.5);
+            }
+
             // Return the y pixel for a graph point
             function getYPixel(val) {
                 return graph.height() - (((graph.height() - yPadding) / getMaxY()) * val) - yPadding;
@@ -113,10 +142,26 @@
                 c.lineTo(graph.width(), graph.height() - yPadding);
                 c.stroke();
                 
-                
+                //INR VALUES DRAWING
                 // Draw the X value texts
-                for(var i = 0; i < janDATA.length; i ++) {
-                    c.fillText(janDATA[i].X, getXPixel(i), graph.height() - yPadding + 20);
+                for(var i = 0; i < janDATA_INR.length; i ++) {
+                    c.fillText(janDATA_INR[i].X, getXPixel(i), graph.height() - yPadding + 20);
+                }
+                
+                // Draw the Y value texts
+                   
+                c.textAlign = "right"
+                c.textBaseline = "middle";
+                                 
+                
+                for(var i = 0; i < getMaxY(); i += 5) {               
+                    c.fillText(i, xPadding - 10 , getYPixel(i));
+                }
+
+               //GBP VALUES DRAWING
+                // Draw the X value texts
+                for(var i = 0; i < janDATA_GBP.length; i ++) {
+                    c.fillText(janDATA_GBP[i].X, getXPixel(i), graph.height() - yPadding + 20);
                 }
                 
                 // Draw the Y value texts
@@ -133,20 +178,38 @@
                 
                 c.strokeStyle = '#f00';
                 
-                // Draw the line graph
+                // Draw the line graph for INR
                 c.beginPath();
-                c.moveTo(getXPixel(0), getYPixel(janDATA [0].Y));
-                for(var i = 1; i < janDATA.length; i ++) {
-                    c.lineTo(getXPixel(i), getYPixel(janDATA[i].Y));
+                c.moveTo(getXPixel(0), getYPixel(janDATA_INR[0].Y));
+                for(var i = 1; i < janDATA_INR.length; i ++) {
+                    c.lineTo(getXPixel(i), getYPixel(janDATA_INR[i].Y));
+                }
+                c.stroke();
+
+
+                // Draw the line graph for GBP
+                c.beginPath();
+                c.moveTo(getXPixel(0), getYPixel(janDATA_GBP[0].Y));
+                for(var i = 1; i < janDATA_GBP.length; i ++) {
+                    c.lineTo(getXPixel(i), getYPixel(janDATA_GBP[i].Y));
                 }
                 c.stroke();
                 
-                // Draw the dots
+                // Draw the dots for INR
                 c.fillStyle = '#333';
                 
-                for(var i = 0; i < janDATA.length; i ++) {  
+                for(var i = 0; i < janDATA_INR.length; i ++) {  
                     c.beginPath();
-                    c.arc(getXPixel(i), getYPixel(janDATA[i].Y), 4, 0, Math.PI * 2, true);
+                    c.arc(getXPixel(i), getYPixel(janDATA_INR[i].Y), 4, 0, Math.PI * 2, true);
+                    c.fill();
+                }
+
+                // Draw the dots for GBP
+                c.fillStyle = '#333';
+                
+                for(var i = 0; i < janDATA_GBP.length; i ++) {  
+                    c.beginPath();
+                    c.arc(getXPixel(i), getYPixel(janDATA_GBP[i].Y), 4, 0, Math.PI * 2, true);
                     c.fill();
                 }
             });
