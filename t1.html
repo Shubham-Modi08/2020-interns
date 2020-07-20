@@ -4,7 +4,6 @@
         <title>INR AGAINST EUR EXCHANGE RATE</title> 
         <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.1.min.js"></script>     
         <h1>EXCHANGE RATE OF INR AGAINST EUR FOR JANUARY MONTH</h1>
-       
     </head>
            <script>
                 var graph;
@@ -21,6 +20,12 @@
                     var janDATA = []
                     var janRATE
                     var janDATE 
+
+                    var element = document.getElementById("xlab");
+                    element.style.position = "absolute";
+                    element.style.left = '250px';
+                    element.style.top = '315px';
+
                     
 
                     for(i=2 ; i<=31 ; i++)
@@ -85,34 +90,37 @@
 
             $(document).ready(function() {
                 graph = $('#graph');
-                var c = graph[0].getContext('2d');            
+                var c = graph[0].getContext('2d'); 
+                    
                 
                 c.lineWidth = 2;
                 c.strokeStyle = '#333';
                 c.font = 'italic 8pt sans-serif';
                 c.textAlign = "center";
                 
-                // Draw the axises                                //LABEL X AXIS LEFT TO BE DONE
+                // Draw the axises                              
                 c.beginPath();
                 c.moveTo(xPadding, 0);
-                c.lineTo(xPadding, graph.height() - yPadding);
-                c.lineTo(graph.width(), graph.height() - yPadding);
+                c.lineTo(xPadding, 140);
+                c.lineTo(graph.width(), 140);
                 c.stroke();
+                
                 
                 // Draw the X value texts
                 for(var i = 0; i < janDATA.length; i ++) {
-                    c.fillText(janDATA[i].X, getXPixel(i), graph.height() - yPadding + 20);
+                    c.fillText(janDATA[i].X, getXPixel(i), 160);
                 }
                 
                 // Draw the Y value texts
+                   
                 c.textAlign = "right"
                 c.textBaseline = "middle";
-                // c.ylabel = "JAN 2020"                       //LABEL Y AXIS LEFT TO BE DONE
+                                 
                 
-                for(var i = 0; i < getMaxY(); i += 5) {                //VALUES TO BE SET PROPERLY
+                for(var i = 65; i < getMaxY(); i += 5) {               
                     c.fillText(i, xPadding - 10 , getYPixel(i));
                 }
-                
+               
                 c.strokeStyle = '#f00';
                 
                 // Draw the line graph
@@ -137,6 +145,9 @@
             </script> 
 
     <body>
+        <br>
+        <h4>INR RATES</h4>
+        <h3 id = "xlab">JAN 2020</h3>
         <canvas id="graph" width="700" height="500">
                     
         </canvas>
