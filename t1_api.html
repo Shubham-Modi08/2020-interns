@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>INR AGAINST EUR EXCHANGE RATE</title> 
+        <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.1.min.js"></script>     
+        <h1>EXCHANGE RATE OF INR AGAINST EUR FOR JANUARY MONTH</h1>
+    </head>
+           <script>
+                var graph;
+                var xPadding = 30;
+                var yPadding = 30;
+            $.getJSON('https://api.exchangeratesapi.io/latest',
+                function(data){
+                    var i;
+                    // var date;
+                    // var data = json;
+                    var rate = data.rates;
+                    var firstSat = 4;
+                    var firstSun = 5;
+                    var janDATA = []
+                    var janRATE
+                    var janDATE 
+
+                    // X LABEL 
+                    var element = document.getElementById("xlab");
+                    element.style.position = "absolute";
+                    element.style.left = '250px';
+                    element.style.top = '315px';
+
+                    
+
+                    for(i=2 ; i<=31 ; i++)
+                    {
+                        if(i == firstSat )
+                        {
+                                firstSat=firstSat+7;                            
+
+                        }else if(i == firstSun)
+                        {
+
+                                firstSun=firstSun+7;
+                        }
+                        else{
+                          
+                            if(i>=10){
+                                 janDATE = i ;
+                                 janRATE= rate["2020-01-"+i].INR;
+
+                                 janDATA.push({
+                                     X: janDATE,
+                                     Y: janRATE,
+                                 })
+                            }
+                            else{
+                               janDATE= i;
+                               janRATE= rate["2020-01-0"+i].INR;
+                               
+                               janDATA.push({
+                                     X: janDATE,
+                                     Y: janRATE,
+                                 })
+                            }   
+                        }
+                    
+                    }
+                    console.log(janDATA)
+                    
+                   // Returns the max Y value in our data list
+            function getMaxY() {
+                var max = 0;
+                
+                for(var i = 0; i < janDATA.length; i ++) {
+                    if(janDATA[i].Y > max) {
+                        max = janDATA[i].Y;
+                        // console.log(max);
+                    }
+                }
+                
+                max += 10 - max % 10;
+                return max;
+            }
+                 // Return the x pixel for a graph point
+            function getXPixel(val) {
+                return ((graph.width() - xPadding) / janDATA.length) * val + (xPadding * 1.5);
+            }
+            
+            // Return the y pixel for a graph point
+            function getYPixel(val) {
+                return graph.height() - (((graph.height() - yPadding) / getMaxY()) * val) - yPadding;
+            }
+
+            $(document).ready(function() {
+                graph = $('#graph');
+                var c = graph[0].getContext('2d'); 
+                    
+                
+                c.lineWidth = 2;
+                c.strokeStyle = '#333';
+                c.font = 'italic 8pt sans-serif';
+                c.textAlign = "center";
+                
+                // Draw the axises                              
+                c.beginPath();
+                c.moveTo(xPadding, 0);
+                c.lineTo(xPadding, 140);
+                c.lineTo(graph.width(), 140);
+                c.stroke();
+                
+                
+                // Draw the X value texts
+                for(var i = 0; i < janDATA.length; i ++) {
+                    c.fillText(janDATA[i].X, getXPixel(i), 160);
+                }
+                
+                // Draw the Y value texts
+                   
+                c.textAlign = "right"
+                c.textBaseline = "middle";
+                                 
+                
+                for(var i = 65; i < getMaxY(); i += 5) {               
+                    c.fillText(i, xPadding - 10 , getYPixel(i));
+                }
+               
+                c.strokeStyle = '#f00';
+                
+                // Draw the line graph
+                c.beginPath();
+                c.moveTo(getXPixel(0), getYPixel(janDATA [0].Y));
+                for(var i = 1; i < janDATA.length; i ++) {
+                    c.lineTo(getXPixel(i), getYPixel(janDATA[i].Y));
+                }
+                c.stroke();
+                
+                // Draw the dots
+                c.fillStyle = '#333';
+                
+                for(var i = 0; i < janDATA.length; i ++) {  
+                    c.beginPath();
+                    c.arc(getXPixel(i), getYPixel(janDATA[i].Y), 4, 0, Math.PI * 2, true);
+                    c.fill();
+                }
+            });
+                 })
+                
+            </script> 
+
+    <body>
+        <br>
+        <h4>INR RATES</h4>
+        <h3 id = "xlab">JAN 2020</h3>
+        <canvas id="graph" width="700" height="500">
+                    
+        </canvas>
+    </body>
+</html>

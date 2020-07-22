@@ -9,54 +9,63 @@
                 var graph;
                 var xPadding = 30;
                 var yPadding = 30;
-
-                
+            // LATEST RATES OF INR & GBP FETCHING
             $.getJSON("latest-rates.json",
                 function(json){
                     var data = json;
                     var latest_rates = data.rates;
-                    var _INR = []
-                    var _GBP = []
-                    var INR
-                    var GBP
                     var latest_INR = latest_rates.INR;
-                    var latest_GBP = latest_rates.GBP;   
+                    var latest_GBP = latest_rates.GBP;  
+                    var latest_val = []
 
-                            _INR.push({
-                                Y: INR,
-                            })
-
-                            
-                    })
-
-
-                $(document).ready(function() {
+                    if(latest_rates == latest_rates){
+                        latest_val.push({
+                            latest_INR,latest_GBP
+                        })
+                        // console.log(latest_val)
+                    } 
+                });
+                    function get_latestrates() {
+                var max = 0;
+                
+                for(var i = 0; i < latest_val.length; i ++) {
+                    if(latest_val > max) {
+                        max = latest_val;
+                        // console.log(max);
+                    }
+                }
+                
+                max += 10 - max % 10;
+                return max;
+           
+                    }
+              
+             $(document).ready(function() {
                 graph = $('#graph');
                 var c = graph[0].getContext('2d'); 
-
-
-                    c.fillStyle = '#333';
-                
-                for(var i = 0; i < _INR.length; i ++) {  
-                    c.beginPath();
-                    c.arc(getXPixel(i), getYPixel(_INR[i].Y), 4, 0, Math.PI * 2, true);
-                    c.fill();
-
                     
+                
+                c.lineWidth = 2;
+                c.strokeStyle = '#333';
+                c.font = 'italic 8pt sans-serif';
+                c.textAlign = "center";
+
+            // Return the y pixel for a graph point
+            function getYPixel(val) {
+                return graph.height() - (((graph.height() - yPadding) / get_latestrates()) * val) - yPadding;
+            }
+                
+
+                // Draw the dots for INR
+                c.fillStyle = '#333';
+                
+                for(var i = 0; i < latest_val.length; i ++) {  
+                    c.beginPath();
+                    c.arc(getXPixel(i), getYPixel(latest_val), 4, 0, Math.PI * 2, true);
+                    c.fill();
                 }
-
-                    console.log(latest_INR)
-                    console.log(latest_GBP)
-                }
-            
-            );
-
-            // });
-
-
-
-
-
+                    
+             });
 
             $.getJSON("data.json",
                 function(json){
@@ -175,7 +184,7 @@
                 return graph.height() - (((graph.height() - yPadding) / getMaxY()) * val) - yPadding;
             }
                 
-
+                });
             $(document).ready(function() {
                 graph = $('#graph');
                 var c = graph[0].getContext('2d'); 
@@ -315,8 +324,7 @@
                 }
             })
         
-        });
-
+                
         
             </script> 
 
