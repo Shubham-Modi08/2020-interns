@@ -9,17 +9,19 @@
                 var graph;
                 var xPadding = 30;
                 var yPadding = 30;
+
             $.getJSON("data.json",
                 function(json){
                     var i;
                     var date;
                     var data = json;
                     var rate = data.rates;
-                    var firstSat = 4;
-                    var firstSun = 5;
+                    var firstSat = 5;
+                    var firstSun = 6;
                     var janDATA = []
                     var janRATE
                     var janDATE 
+                    // console.log(rate["2019-02-05"].INR)
 
                     // X LABEL 
                     var element = document.getElementById("xlab");
@@ -44,7 +46,7 @@
                           
                             if(i>=10){
                                  janDATE = i ;
-                                 janRATE= rate["2020-01-"+i].INR;
+                                 janRATE= rate["2019-01-"+i].INR;
 
                                  janDATA.push({
                                      X: janDATE,
@@ -53,7 +55,7 @@
                             }
                             else{
                                janDATE= i;
-                               janRATE= rate["2020-01-0"+i].INR;
+                               janRATE= rate["2019-01-0"+i].INR;
                                
                                janDATA.push({
                                      X: janDATE,

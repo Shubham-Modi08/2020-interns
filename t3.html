@@ -9,6 +9,7 @@
                 var graph;
                 var xPadding = 30;
                 var yPadding = 30;
+                
             // LATEST RATES OF INR & GBP FETCHING
             $.getJSON("latest-rates.json",
                 function(json){
@@ -17,12 +18,13 @@
                     var latest_INR = latest_rates.INR;
                     var latest_GBP = latest_rates.GBP;  
                     var latest_val = []
+                    console.log(latest_val)
 
                     if(latest_rates == latest_rates){
                         latest_val.push({
                             latest_INR,latest_GBP
                         })
-                        // console.log(latest_val)
+                        
                     } 
                 });
                     function get_latestrates() {
@@ -73,8 +75,8 @@
                     var date;
                     var data = json;
                     var rate = data.rates;
-                    var firstSat = 4;
-                    var firstSun = 5;
+                    var firstSat = 5;
+                    var firstSun = 6;
                     var janDATA_INR = []
                     var janDATA_GBP = []
                     var janRATE
@@ -114,7 +116,7 @@
                           
                             if(i>=10){
                                  janDATE = i ;
-                                 janRATE= rate["2020-01-"+i].INR;
+                                 janRATE= rate["2019-01-"+i].INR;
 
                                  janDATA_INR.push({
                                      X: janDATE,
@@ -122,7 +124,7 @@
                                  })
 
                                  janDATE = i ;
-                                 janRATE= rate["2020-01-"+i].GBP;
+                                 janRATE= rate["2019-01-"+i].GBP;
 
                                  janDATA_GBP.push({
                                      X: janDATE,
@@ -131,7 +133,7 @@
                             }
                             else{
                                janDATE= i;
-                               janRATE= rate["2020-01-0"+i].INR;
+                               janRATE= rate["2019-01-0"+i].INR;
 
                                janDATA_INR.push({
                                      X: janDATE,
@@ -139,7 +141,7 @@
                                  })
 
                                janDATE= i;
-                               janRATE= rate["2020-01-0"+i].GBP;
+                               janRATE= rate["2019-01-0"+i].GBP;
                                
                                  janDATA_GBP.push({
                                      X: janDATE,
